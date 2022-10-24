@@ -1,6 +1,13 @@
-# Chargesplit Domus series custom component for Home Assistant
+# Chargesplit Domus EV WallBox series custom component for Home Assistant
 
 This first integration for Chargesplit Domus Series will let you integrate your wallbox inside Home Assistant as a custom components: 
+
+SUPPORTED MODELS:
+
+- WB132H
+- WB132P
+- WB332P
+- WB132S
 
 INSTALLATION INSTRUCTION: 
 
@@ -16,6 +23,7 @@ LIMITATION:
 - Polling time is limited to 60 Seconds 
 - You need to wait 1 minute after sending commands to see updates
 - A single station is manageable per HA installation 
+- Single current transformer models (WB132H / WB332H /WB332P) will show same value in Home and Solar consumption as it's not possible to determine where current transformer has been installed.  WB-132S with 2 current sensors has not this limitation
 
 WHERE DO I FIND MY SECRET CODE? 
 
