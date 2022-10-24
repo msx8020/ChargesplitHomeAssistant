@@ -27,6 +27,6 @@ LIMITATION:
 
 WHERE DO I FIND MY SECRET CODE? 
 
-To get your secret code please email to support@chargepslit.com indicating your wallbox serial. 
+To get your secret code please email to support@chargesplit.com indicating your wallbox serial. 
 Secret code will then be integrated into app
 
