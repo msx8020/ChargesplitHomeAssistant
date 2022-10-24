@@ -1,0 +1,12 @@
+{
+  "domain": "Chargesplit",
+  "name": "Chargesplit Domus",
+  "documentation": "https://github.com/msx8020/ChargesplitHomeAssistant",
+  "issue_tracker": "https://github.com/msx8020/ChargesplitHomeAssistant/issues",
+  "dependencies": [],
+  "config_flow": true,
+  "codeowners": ["@msx8020"],
+  "requirements": ["beautifulsoup4==4.10.0"],
+  "version": "0.0.1",
+  "iot_class": "cloud_polling"
+}

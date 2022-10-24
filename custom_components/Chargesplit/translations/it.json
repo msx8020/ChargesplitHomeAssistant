@@ -1,0 +1,30 @@
+{
+    "config": {
+      "step": {
+        "user": {
+          "title": "Chargesplit login",
+          "description": "Inserisci il seriale della tua wallbox (CH..) ed il codice segreto",
+          "data": {
+            "serial": "Seriale Wallbox",
+            "code": "Codice Segreto"
+          }
+        }
+      },
+      "error": {
+        "auth": "Seriale/codice errati"
+      },
+      "abort": {
+        "single_instance_allowed": "Puoi installare una singola stazione"
+      }
+    }, "options": {
+      "step": {
+        "user": {
+          "title": "Tempo polling in secondi (ND)",
+          "data": {
+            "sync_interval": "Valore in secondi"
+          }
+        }
+      }
+    }
+  }
+  
