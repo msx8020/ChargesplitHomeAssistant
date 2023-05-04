@@ -1,13 +1,16 @@
 # Chargesplit Domus EV WallBox series custom component for Home Assistant
 
+
 This first integration for Chargesplit Domus Series will let you integrate your wallbox inside Home Assistant as a custom components: 
 
 SUPPORTED MODELS:
 
 - WB132H
-- WB132P
 - WB332P
-- WB132S
+- WB332HS
+- WB132HS
+- WB132PRY
+- WB332PRY
 
 INSTALLATION INSTRUCTION: 
 
@@ -29,4 +32,6 @@ WHERE DO I FIND MY SECRET CODE?
 
 To get your secret code please email to support@chargesplit.com indicating your wallbox serial. 
 Secret code will then be integrated into app
+ 
+
 

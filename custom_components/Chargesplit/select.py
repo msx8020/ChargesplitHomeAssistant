@@ -1,4 +1,3 @@
-"""GoodWe PV inverter selection settings entities."""
 import logging
 import requests
 import asyncio
