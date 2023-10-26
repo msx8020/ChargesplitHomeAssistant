@@ -12,7 +12,7 @@ class ChargesplitEntity(CoordinatorEntity):
     def __init__(self, coordinator: ChargesplitDataUpdateCoordinator, entry):
         super().__init__(coordinator)
         self.entry = entry
-         
+
     @property
     def device_info(self):
         return {

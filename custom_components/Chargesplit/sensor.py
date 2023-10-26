@@ -35,6 +35,7 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 async def async_setup_entry(hass, entry, async_add_devices):
     coordinator = hass.data[DOMAIN]
+    serial = entry.data["serial"]
 
     INSTRUMENTS = [
         (
@@ -44,6 +45,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
             ELECTRIC_POTENTIAL_VOLT,
             "mdi:lightning-bolt",
             SensorStateClass.MEASUREMENT,
+            serial,
         ),
         (
             "power_voltagel1",
@@ -52,6 +54,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
             ELECTRIC_POTENTIAL_VOLT,
             "mdi:lightning-bolt",
             SensorStateClass.MEASUREMENT,
+            serial,
         ),
         (
             "power_voltagel3",
@@ -60,6 +63,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
             ELECTRIC_POTENTIAL_VOLT,
             "mdi:lightning-bolt",
             SensorStateClass.MEASUREMENT,
+            serial,
         ),
         (
             "device_temperature",
@@ -68,6 +72,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
             TEMP_CELSIUS,
             "mdi:temperature-celsius",
             SensorStateClass.MEASUREMENT,
+            serial,
         ),
         (
             "device_status",
@@ -76,30 +81,34 @@ async def async_setup_entry(hass, entry, async_add_devices):
             None,
             "mdi:ev-station",
             None,
+            serial,
         ),
-         (
+        (
             "device_model",
             "Wallbox Model",
             "MODEL",
             None,
             "mdi:ev-station",
             None,
+            serial,
         ),
-         (
+        (
             "device_firmware",
             "Wallbox firmware",
             "FWVERS",
             None,
             "mdi:ev-station",
             None,
+            serial,
         ),
-         (
+        (
             "device_serial",
             "Wallbox serial",
             "SERIAL",
             None,
             "mdi:ev-station",
             None,
+            serial,
         ),
         (
             "power_charged_kWh",
@@ -108,6 +117,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
             ENERGY_KILO_WATT_HOUR,
             "mdi:speedometer",
             SensorDeviceClass.ENERGY,
+            serial,
         ),
         (
             "power_pilotamps",
@@ -116,6 +126,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
             ELECTRIC_CURRENT_AMPERE,
             "mdi:speedometer",
             SensorDeviceClass.CURRENT,
+            serial,
         ),
         (
             "power_solar_power",
@@ -124,6 +135,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
             POWER_KILO_WATT,
             "mdi:speedometer",
             SensorDeviceClass.POWER,
+            serial,
         ),
         (
             "power_house_power",
@@ -132,6 +144,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
             POWER_KILO_WATT,
             "mdi:speedometer",
             SensorDeviceClass.POWER,
+            serial,
         ),
         (
             "power_car_charging",
@@ -140,21 +153,25 @@ async def async_setup_entry(hass, entry, async_add_devices):
             POWER_KILO_WATT,
             "mdi:speedometer",
             SensorDeviceClass.POWER,
+            serial,
         ),    
-          
+        
     ]
 
     sensors = [
         ChargesplitSensor(
-            coordinator, entry, id, description, key, unit, icon, device_class
+            coordinator, entry, id, description, key, unit, icon, device_class,serial
         )
-        for id, description, key, unit, icon, device_class in INSTRUMENTS
+        for id, description, key, unit, icon, device_class,serial in INSTRUMENTS
     ]
 
     async_add_devices(sensors, True)
 
 
 class ChargesplitSensor(ChargesplitEntity):
+
+    
+
     def __init__(
         self,
         coordinator: ChargesplitDataUpdateCoordinator,
@@ -165,9 +182,10 @@ class ChargesplitSensor(ChargesplitEntity):
         unit: str,
         icon: str,
         device_class: str,
+        serial,
     ):
         super().__init__(coordinator, entry)
-        self._id = id
+        self._id = f"{serial}-{description}"
         self.description = description
         self.key = key
         self.unit = unit

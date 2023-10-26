@@ -32,8 +32,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     if hass.data.get(DOMAIN) is None:
         hass.data.setdefault(DOMAIN, {})
 
-    code = entry.data.get(CONF_CODE)
-    serial = entry.data.get(CHARGEPOINT_SERIAL)
+    code = entry.data["code"]
+    serial = entry.data["serial"]
     api = ChargesplitApi(code,serial)
     sync_interval = DEFAULT_SYNC_INTERVAL #entry.options.get(CONF_SYNC_INTERVAL, DEFAULT_SYNC_INTERVAL)
     _LOGGER.warning(serial)

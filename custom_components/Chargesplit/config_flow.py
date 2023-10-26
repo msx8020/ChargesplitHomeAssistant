@@ -34,7 +34,7 @@ class ChargesplitFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             valid = await self._test_credentials(
-                 user_input[CONF_CODE],user_input[CHARGEPOINT_SERIAL]
+            user_input[CONF_CODE],user_input[CHARGEPOINT_SERIAL]
             )
             if valid:
                 return self.async_create_entry(
@@ -90,8 +90,7 @@ class ChargesplitOptionsFlowHandler(config_entries.OptionsFlow):
         if user_input is not None:
             self.options.update(user_input)
             return await self._update_options()
-         
-         
+
 
         return self.async_show_form(
             step_id="user",

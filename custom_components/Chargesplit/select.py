@@ -11,9 +11,8 @@ from homeassistant.helpers.entity import DeviceInfo, EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_state_change_event
 from .api import ChargesplitApi
-from .const import DOMAIN,CONF_CODE,CHARGEPOINT_SERIAL
 from .coordinator import ChargesplitDataUpdateCoordinator
-
+from .const import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -89,9 +88,12 @@ async def async_setup_entry(
 ) -> None:
     """Set up the inverter select entities from a config entry."""
     coordinator = hass.data[DOMAIN]
-    code = config_entry.data.get(CONF_CODE)
-    serial = config_entry.data.get(CHARGEPOINT_SERIAL)
-    
+    code = config_entry.data["code"]
+    serial = config_entry.data["serial"]
+
+    #_LOGGER .warning("this is")
+    #_LOGGER .warning(serial)
+
     entity = ChargepointOperationModeEntity(
     OPERATION_MODE,
     "SELECT POWER",
@@ -131,11 +133,14 @@ class ChargepointOperationModeEntity(SelectEntity):
     ) -> None:
         """Initialize the inverter operation mode setting entity."""
         self.entity_description = description
-        self._attr_unique_id = f"{DOMAIN}-{description.key}"
+        self._attr_unique_id = f"{serial}-{description.key}"
         self._attr_options = CHARGEPOINT_OPERATION_MODES
         self._attr_current_option = current_mode
         self.serial = serial
         self.code = code 
+        #_LOGGER.warning("SERIAL setup")
+        #_LOGGER.warning(serial)
+        
 
     async def async_select_option(
         self, option: str
@@ -144,9 +149,13 @@ class ChargepointOperationModeEntity(SelectEntity):
         """Change the selected option."""
         url = "https://europe-west1-chargesplithome.cloudfunctions.net/secureEndpoint"
         session = requests.Session()
+        
+        #_LOGGER .warning("OPMODE")
+        #_LOGGER .warning(self.serial)
+
         data = { "SECRET": self.code, "SERIAL": self.serial, "COMMAND": "PILOTCHANGE","VALUE":option}   
         result =  await self.hass.async_add_executor_job(lambda:  session.post(url, data=data, verify=False))
-        
+        #_LOGGER .warning(result)
         
 
 class ChargepointLockModeEntity(SelectEntity):
@@ -162,19 +171,21 @@ class ChargepointLockModeEntity(SelectEntity):
     ) -> None:
         """Initialize the inverter operation mode setting entity."""
         self.entity_description = description
-        self._attr_unique_id = f"{DOMAIN}-{description.key}"
+        self._attr_unique_id = f"{serial}-{description.key}"
         self._attr_options = CHARGEPOINT_LOCK_MODES
         self._attr_current_option = current_mode
         self.serial = serial
         self.code = code 
 
+
     async def async_select_option(
-        self, option: str
+        self,serial, option: str
         ) -> None:
         """Change the selected option."""
         url = "https://europe-west1-chargesplithome.cloudfunctions.net/secureEndpoint"
         session = requests.Session()
-        _LOGGER.warning(option)
+        #_LOGGER.warning("OPMODE")
+        #_LOGGER.warning(serial)
         data = { "SECRET": self.code, "SERIAL": self.serial, "COMMAND": "LOCK","VALUE":option}   
         result =  await self.hass.async_add_executor_job(lambda:  session.post(url, data=data, verify=False))
         
@@ -192,7 +203,7 @@ class ChargepointPauseModeEntity(SelectEntity):
     ) -> None:
         """Initialize the inverter operation mode setting entity."""
         self.entity_description = description
-        self._attr_unique_id = f"{DOMAIN}-{description.key}"
+        self._attr_unique_id = f"{serial}-{description.key}"
         self._attr_options = CHARGEPOINT_PAUSE_MODES
         self._attr_current_option = current_mode
         self.serial = serial
@@ -204,6 +215,6 @@ class ChargepointPauseModeEntity(SelectEntity):
         """Change the selected option."""
         url = "https://europe-west1-chargesplithome.cloudfunctions.net/secureEndpoint"
         session = requests.Session()
-        _LOGGER.warning(option)
+        #_LOGGER.warning(option)
         data = { "SECRET": self.code, "SERIAL": self.serial, "COMMAND": "PAUSERESTART","VALUE":option}   
         result =  await self.hass.async_add_executor_job(lambda:  session.post(url, data=data, verify=False))
