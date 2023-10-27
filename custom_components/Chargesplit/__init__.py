@@ -51,11 +51,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    coordinator = hass.data[DOMAIN]
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
+    """Handle removal of an entry."""
+    coordinator =  coordinator = hass.data[DOMAIN]
+
     unloaded = all(
         await asyncio.gather(
-            [
+            *[
                 hass.config_entries.async_forward_entry_unload(entry, platform)
                 for platform in PLATFORMS
                 if platform in coordinator.platforms
@@ -63,9 +65,14 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         )
     )
     if unloaded:
+        _LOGGER.warning("chargesplit domus unloaded")
         hass.data[DOMAIN] = []
 
-    return unloaded
+    return unloaded 
+
+
+
+
 
 
 async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:

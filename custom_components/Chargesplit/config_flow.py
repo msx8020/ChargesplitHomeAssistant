@@ -46,6 +46,8 @@ class ChargesplitFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             return await self._show_config_form(user_input)
 
         return await self._show_config_form(user_input)
+        
+
 
     async def _show_config_form(self, user_input):  # pylint: disable=unused-argument
         return self.async_show_form(
@@ -82,6 +84,9 @@ class ChargesplitOptionsFlowHandler(config_entries.OptionsFlow):
     async def async_step_init(self, user_input=None):  # pylint: disable=unused-argument
         return await self.async_step_user()
 
+        await self.async_set_unique_id(device_unique_id)
+        self._abort_if_unique_id_configured()
+
         return self.async_create_entry(
             title=self.config_entry.data.get(CONF_SYNC_INTERVAL), data=self.options
         )
@@ -111,7 +116,7 @@ class ChargesplitOptionsFlowHandler(config_entries.OptionsFlow):
     
     async def _update_options(self):
 
-  
+
         self.options = {'sync_interval': 60}
         return self.async_create_entry(
         title=self.config_entry.data.get(CONF_SYNC_INTERVAL), data=self.options

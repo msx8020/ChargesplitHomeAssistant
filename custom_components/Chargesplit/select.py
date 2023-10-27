@@ -162,12 +162,14 @@ class ChargepointLockModeEntity(SelectEntity):
     """Entity representing the inverter operation mode."""
 
     _attr_should_poll = False
+    
     def __init__(
         self,
         description: SelectEntityDescription,
         current_mode: str,
         serial: str,
         code: str,
+        
     ) -> None:
         """Initialize the inverter operation mode setting entity."""
         self.entity_description = description
@@ -176,16 +178,20 @@ class ChargepointLockModeEntity(SelectEntity):
         self._attr_current_option = current_mode
         self.serial = serial
         self.code = code 
-
+        #_LOGGER.warning("SERIAL setup")
+        #_LOGGER.warning(serial)
+        
 
     async def async_select_option(
-        self,serial, option: str
+        self, option: str
         ) -> None:
+        
         """Change the selected option."""
         url = "https://europe-west1-chargesplithome.cloudfunctions.net/secureEndpoint"
         session = requests.Session()
-        #_LOGGER.warning("OPMODE")
-        #_LOGGER.warning(serial)
+        
+        #_LOGGER .warning("OPMODE")
+        #_LOGGER .warning(self.serial)
         data = { "SECRET": self.code, "SERIAL": self.serial, "COMMAND": "LOCK","VALUE":option}   
         result =  await self.hass.async_add_executor_job(lambda:  session.post(url, data=data, verify=False))
         
