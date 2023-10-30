@@ -84,7 +84,7 @@ class ChargesplitOptionsFlowHandler(config_entries.OptionsFlow):
     async def async_step_init(self, user_input=None):  # pylint: disable=unused-argument
         return await self.async_step_user()
 
-        await self.async_set_unique_id(device_unique_id)
+        await self.async_set_unique_id(serial)
         self._abort_if_unique_id_configured()
 
         return self.async_create_entry(
