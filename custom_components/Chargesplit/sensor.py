@@ -14,16 +14,12 @@ from homeassistant.components.sensor import (
 )
 
 from homeassistant.const import (
-    PERCENTAGE,
-    TIME_DAYS,
-    VOLUME_LITERS,
-    MASS_KILOGRAMS,
-    ELECTRIC_CURRENT_AMPERE,
-    ENERGY_KILO_WATT_HOUR,
-    LENGTH_KILOMETERS,
-    TEMP_CELSIUS,
-    ELECTRIC_POTENTIAL_VOLT,
-    POWER_KILO_WATT
+
+    UnitOfElectricCurrent,
+    UnitOfElectricPotential,
+    UnitOfEnergy,
+    UnitOfPower,
+    UnitOfTemperature
 )
 
 from .const import DOMAIN
@@ -42,8 +38,9 @@ async def async_setup_entry(hass, entry, async_add_devices):
             "power_voltagel2",
             "Voltage L2",
             "VOLT2",
-            ELECTRIC_POTENTIAL_VOLT,
+            UnitOfElectricPotential.VOLT,
             "mdi:lightning-bolt",
+            SensorDeviceClass.POWER,
             SensorStateClass.MEASUREMENT,
             serial,
         ),
@@ -51,8 +48,9 @@ async def async_setup_entry(hass, entry, async_add_devices):
             "power_voltagel1",
             "Voltage L1",
             "VOLT1",
-            ELECTRIC_POTENTIAL_VOLT,
+            UnitOfElectricPotential.VOLT,
             "mdi:lightning-bolt",
+            SensorDeviceClass.POWER,
             SensorStateClass.MEASUREMENT,
             serial,
         ),
@@ -60,8 +58,9 @@ async def async_setup_entry(hass, entry, async_add_devices):
             "power_voltagel3",
             "Voltage L3",
             "VOLT3",
-            ELECTRIC_POTENTIAL_VOLT,
+            UnitOfElectricPotential.VOLT,
             "mdi:lightning-bolt",
+            SensorDeviceClass.POWER,
             SensorStateClass.MEASUREMENT,
             serial,
         ),
@@ -69,8 +68,9 @@ async def async_setup_entry(hass, entry, async_add_devices):
             "device_temperature",
             "Temperature",
             "TEMP",
-            TEMP_CELSIUS,
+            UnitOfTemperature.CELSIUS,
             "mdi:temperature-celsius",
+            SensorDeviceClass.TEMPERATURE,
             SensorStateClass.MEASUREMENT,
             serial,
         ),
@@ -81,6 +81,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
             None,
             "mdi:ev-station",
             None,
+            None,
             serial,
         ),
         (
@@ -89,6 +90,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
             "MODEL",
             None,
             "mdi:ev-station",
+            None,
             None,
             serial,
         ),
@@ -99,6 +101,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
             None,
             "mdi:ev-station",
             None,
+            None,
             serial,
         ),
         (
@@ -108,51 +111,57 @@ async def async_setup_entry(hass, entry, async_add_devices):
             None,
             "mdi:ev-station",
             None,
+            None,
             serial,
         ),
         (
             "power_charged_kWh",
             "Charged kWh",
             "TOTALCHARGED",
-            ENERGY_KILO_WATT_HOUR,
+            UnitOfEnergy.KILO_WATT_HOUR,
             "mdi:speedometer",
             SensorDeviceClass.ENERGY,
+            SensorStateClass.TOTAL_INCREASING,
             serial,
         ),
         (
             "power_pilotamps",
             "Pilot Amps",
             "PILOTLIMIT",
-            ELECTRIC_CURRENT_AMPERE,
+            UnitOfElectricCurrent.AMPERE,
             "mdi:speedometer",
             SensorDeviceClass.CURRENT,
+            SensorStateClass.MEASUREMENT,
             serial,
         ),
         (
             "power_solar_power",
             "Generated solar power",
             "SOLARPWR",
-            POWER_KILO_WATT,
+            UnitOfPower.KILO_WATT,
             "mdi:speedometer",
             SensorDeviceClass.POWER,
+            SensorStateClass.MEASUREMENT,
             serial,
         ),
         (
             "power_house_power",
             "House Consumption",
             "HOUSEPWR",
-            POWER_KILO_WATT,
+            UnitOfPower.KILO_WATT,
             "mdi:speedometer",
             SensorDeviceClass.POWER,
+            SensorStateClass.MEASUREMENT,
             serial,
         ),
         (
             "power_car_charging",
             "Car Charging Power",
             "CHARGINGPWR",
-            POWER_KILO_WATT,
+            UnitOfPower.KILO_WATT,
             "mdi:speedometer",
             SensorDeviceClass.POWER,
+            SensorStateClass.MEASUREMENT,
             serial,
         ),    
         
@@ -160,9 +169,9 @@ async def async_setup_entry(hass, entry, async_add_devices):
 
     sensors = [
         ChargesplitSensor(
-            coordinator, entry, id, description, key, unit, icon, device_class,serial
+            coordinator, entry, id, description, key, unit, icon, device_class, device_status, serial
         )
-        for id, description, key, unit, icon, device_class,serial in INSTRUMENTS
+        for id, description, key, unit, icon, device_class, device_status, serial in INSTRUMENTS
     ]
 
     async_add_devices(sensors, True)
@@ -182,6 +191,7 @@ class ChargesplitSensor(ChargesplitEntity):
         unit: str,
         icon: str,
         device_class: str,
+        device_status: str,
         serial,
     ):
         super().__init__(coordinator, entry)
@@ -191,7 +201,7 @@ class ChargesplitSensor(ChargesplitEntity):
         self.unit = unit
         self._icon = icon
         self._device_class = device_class
-
+        self._device_status = device_status
     
 
 
@@ -213,6 +223,10 @@ class ChargesplitSensor(ChargesplitEntity):
     @property
     def device_class(self):
         return self._device_class
+        
+    @property
+    def device_status(self):
+        return self._device_status
 
     @property
     def name(self):
