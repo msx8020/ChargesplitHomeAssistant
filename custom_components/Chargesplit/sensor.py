@@ -32,6 +32,7 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 async def async_setup_entry(hass, entry, async_add_devices):
     coordinator = hass.data[DOMAIN]
     serial = entry.data["serial"]
+    _LOGGER.info("Setting up ChargeSplit with serial " + serial)
 
     INSTRUMENTS = [
         (
@@ -75,7 +76,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
             serial,
         ),
         (
-            "device_status",
+            "state_class",
             "Wallbox Status",
             "STATUS",
             None,
@@ -169,15 +170,15 @@ async def async_setup_entry(hass, entry, async_add_devices):
 
     sensors = [
         ChargesplitSensor(
-            coordinator, entry, id, description, key, unit, icon, device_class, device_status, serial
+            coordinator, entry, id, description, key, unit, icon, device_class, state_class, serial
         )
-        for id, description, key, unit, icon, device_class, device_status, serial in INSTRUMENTS
+        for id, description, key, unit, icon, device_class, state_class, serial in INSTRUMENTS
     ]
 
     async_add_devices(sensors, True)
 
 
-class ChargesplitSensor(ChargesplitEntity):
+class ChargesplitSensor(ChargesplitEntity, SensorEntity):
 
     
 
@@ -191,7 +192,7 @@ class ChargesplitSensor(ChargesplitEntity):
         unit: str,
         icon: str,
         device_class: str,
-        device_status: str,
+        state_class: str,
         serial,
     ):
         super().__init__(coordinator, entry)
@@ -201,7 +202,7 @@ class ChargesplitSensor(ChargesplitEntity):
         self.unit = unit
         self._icon = icon
         self._device_class = device_class
-        self._device_status = device_status
+        self._state_class = state_class
     
 
 
@@ -225,8 +226,8 @@ class ChargesplitSensor(ChargesplitEntity):
         return self._device_class
         
     @property
-    def device_status(self):
-        return self._device_status
+    def state_class(self):
+        return self._state_class
 
     @property
     def name(self):
