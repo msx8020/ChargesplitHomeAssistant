@@ -2,7 +2,7 @@
 # Base component constants
 NAME = "Chargesplit Domus"
 DOMAIN = "Chargesplit"
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 
 # Platforms
 SENSOR = "sensor"

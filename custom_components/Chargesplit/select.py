@@ -88,7 +88,7 @@ class ChargepointOperationModeEntity(SelectEntity):
     def device_info(self) -> DeviceInfo:
         return DeviceInfo(
             identifiers={(DOMAIN, self.serial)},
-            name=NAME,
+            name=f"{NAME} {self.serial}",
             manufacturer=NAME,
             model=VERSION,
         )
@@ -125,7 +125,7 @@ class ChargepointLockModeEntity(SelectEntity):
     def device_info(self) -> DeviceInfo:
         return DeviceInfo(
             identifiers={(DOMAIN, self.serial)},
-            name=NAME,
+            name=f"{NAME} {self.serial}",
             manufacturer=NAME,
             model=VERSION,
         )
@@ -162,7 +162,7 @@ class ChargepointPauseModeEntity(SelectEntity):
     def device_info(self) -> DeviceInfo:
         return DeviceInfo(
             identifiers={(DOMAIN, self.serial)},
-            name=NAME,
+            name=f"{NAME} {self.serial}",
             manufacturer=NAME,
             model=VERSION,
         )

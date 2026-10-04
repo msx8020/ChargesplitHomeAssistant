@@ -25,7 +25,7 @@ LIMITATION:
 
 - Polling time is limited to 60 Seconds 
 - You need to wait 1 minute after sending commands to see updates
-- A single station is manageable per HA installation 
+- Multiple wallboxes are supported: add the integration once per wallbox (one serial each)
 - Single current transformer models (WB132H / WB332H /WB332P) will show same value in Home and Solar consumption as it's not possible to determine where current transformer has been installed.  WB-132S with 2 current sensors has not this limitation
 
 WHERE DO I FIND MY SECRET CODE? 

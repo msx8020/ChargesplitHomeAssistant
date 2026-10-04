@@ -29,6 +29,9 @@ class ChargesplitFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         self._errors = {}
 
         if user_input is not None:
+            await self.async_set_unique_id(user_input[CHARGEPOINT_SERIAL])
+            self._abort_if_unique_id_configured()
+
             valid = await self._test_credentials(
                 user_input[CONF_CODE], user_input[CHARGEPOINT_SERIAL]
             )
@@ -68,15 +71,12 @@ class ChargesplitFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     @staticmethod
     @callback
     def async_get_options_flow(config_entry):
-        return ChargesplitOptionsFlowHandler(config_entry)
+        return ChargesplitOptionsFlowHandler()
 
 
 class ChargesplitOptionsFlowHandler(config_entries.OptionsFlow):
-    def __init__(self, config_entry):
-        self.config_entry = config_entry
-        self.options = dict(config_entry.options)
-
     async def async_step_init(self, user_input=None):
+        self.options = dict(self.config_entry.options)
         return await self.async_step_user()
 
     async def async_step_user(self, user_input=None):
@@ -98,6 +98,4 @@ class ChargesplitOptionsFlowHandler(config_entries.OptionsFlow):
 
     async def _update_options(self):
         self.options = {"sync_interval": self.options.get(CONF_SYNC_INTERVAL, DEFAULT_SYNC_INTERVAL)}
-        return self.async_create_entry(
-            title=self.config_entry.data.get(CHARGEPOINT_SERIAL, ""), data=self.options
-        )
+        return self.async_create_entry(data=self.options)

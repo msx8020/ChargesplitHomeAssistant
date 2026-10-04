@@ -17,7 +17,7 @@ class ChargesplitEntity(CoordinatorEntity):
     def device_info(self):
         return {
             "identifiers": {(DOMAIN, self.coordinator.api.host)},
-            "name": NAME,
+            "name": f"{NAME} {self.coordinator.api.serial}",
             "model": VERSION,
             "manufacturer": NAME,
         }

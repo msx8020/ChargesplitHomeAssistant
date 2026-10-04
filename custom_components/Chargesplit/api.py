@@ -23,7 +23,7 @@ class ChargesplitApi:
         self.code = code
         self.serial = serial
         self.base_url = "https://europe-west1-chargesplithome.cloudfunctions.net/secureEndpoint"
-        self.headers = HEADERS
+        self.headers = dict(HEADERS)
         self.headers["Host"] = serial
         self.headers["Origin"] = self.base_url
 

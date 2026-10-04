@@ -26,7 +26,7 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 async def async_setup_entry(hass, entry, async_add_devices):
-    coordinator = hass.data[DOMAIN]
+    coordinator = hass.data[DOMAIN][entry.entry_id]
     serial = entry.data["serial"]
     _LOGGER.info("Setting up ChargeSplit with serial " + serial)
 

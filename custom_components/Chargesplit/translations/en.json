@@ -14,7 +14,7 @@
       "auth": "Serial/secret is wrong."
     },
     "abort": {
-      "single_instance_allowed": "Only a single instance is allowed."
+      "already_configured": "This wallbox is already configured."
     }
   }, "options": {
     "step": {

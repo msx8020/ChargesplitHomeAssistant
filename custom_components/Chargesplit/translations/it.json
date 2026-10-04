@@ -14,7 +14,7 @@
         "auth": "Seriale/codice errati"
       },
       "abort": {
-        "single_instance_allowed": "Puoi installare una singola stazione"
+        "already_configured": "Questa colonnina è già configurata."
       }
     }, "options": {
       "step": {
